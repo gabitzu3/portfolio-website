@@ -1,0 +1,21 @@
+-- Set admin flag for the owner account after they sign up.
+-- Replace the email with your admin account email.
+--
+-- UPDATE profiles
+-- SET is_admin = TRUE
+-- WHERE id = (
+--   SELECT id FROM auth.users WHERE email = 'admin@example.com'
+-- );
+
+-- Sample published post (run after admin exists)
+-- INSERT INTO posts (title, slug, content, excerpt, category, status, author_id, published_at)
+-- VALUES (
+--   'Welcome to the Platform',
+--   'welcome-to-the-platform',
+--   '# Hello World\n\nThis is your first blog post.',
+--   'An introduction to the portfolio platform.',
+--   'projects',
+--   'published',
+--   (SELECT id FROM profiles WHERE is_admin = TRUE LIMIT 1),
+--   NOW()
+-- );
