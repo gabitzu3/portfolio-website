@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,16 +10,18 @@ const selectClassName =
 export function LogsFilterBar() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [action, setAction] = useState(searchParams.get("action") ?? "");
+  const [userId, setUserId] = useState(searchParams.get("userId") ?? "");
+  const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") ?? "");
+  const [dateTo, setDateTo] = useState(searchParams.get("dateTo") ?? "");
+  
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
     const params = new URLSearchParams();
-
-    for (const [key, value] of formData.entries()) {
-      if (typeof value === "string" && value.length > 0) {
-        params.set(key, value);
-      }
-    }
+    if (action) params.set("action", action);
+    if (userId) params.set("userId", userId);
+    if (dateFrom) params.set("dateFrom", dateFrom);
+    if (dateTo) params.set("dateTo", dateTo);
     router.push(`/admin/logs?${params.toString()}`);
   }
   return (
@@ -31,7 +34,8 @@ export function LogsFilterBar() {
         <select
           id="action"
           name="action"
-          defaultValue={searchParams.get("action") ?? ""}
+          value={action}
+          onChange={(e) => setAction(e.target.value)}
           className={selectClassName}
         >
           <option value="">All actions</option>
@@ -47,7 +51,8 @@ export function LogsFilterBar() {
         <Input
           id="userId"
           name="userId"
-          defaultValue={searchParams.get("userId") ?? ""}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
         />
       </div>
       <div className="space-y-2">
@@ -56,7 +61,8 @@ export function LogsFilterBar() {
           id="dateFrom"
           name="dateFrom"
           type="date"
-          defaultValue={searchParams.get("dateFrom") ?? ""}
+          value={dateFrom}
+          onChange={(e) => setDateFrom(e.target.value)}
         />
       </div>
       <div className="space-y-2">
@@ -65,7 +71,8 @@ export function LogsFilterBar() {
           id="dateTo"
           name="dateTo"
           type="date"
-          defaultValue={searchParams.get("dateTo") ?? ""}
+          value={dateTo}
+          onChange={(e) => setDateTo(e.target.value)}
         />
       </div>
       <div className="md:col-span-4">

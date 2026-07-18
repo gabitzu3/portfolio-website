@@ -77,7 +77,7 @@ export function CertificationForm({ certification }: CertificationFormProps) {
         <input
           type="checkbox"
           name="isVisible"
-          defaultChecked={certification?.is_visible ?? false}
+          defaultChecked={certification?.is_visible ?? true}
         />
         Visible on public site
       </label>

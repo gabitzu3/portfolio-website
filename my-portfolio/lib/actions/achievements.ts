@@ -16,7 +16,7 @@ function parseAchievementFormData(formData: FormData) {
     mediaUrl: formData.get("mediaUrl"),
     mediaType: formData.get("mediaType"),
     sortOrder: formData.get("sortOrder"),
-    isPublished: formData.get("isPublished") === "on" || formData.get("isPublished") === "true",
+    isPublished: formData.get("isPublished") === "on",
   };
 }
 export async function createAchievementAction(
@@ -26,7 +26,11 @@ export async function createAchievementAction(
   const { user } = await requireAdmin();
   const parsed = achievementSchema.safeParse(parseAchievementFormData(formData));
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    const firstError = parsed.error.issues[0];
+    return { 
+      success: false, 
+      error: firstError ? `${firstError.path.join('.')}: ${firstError.message}` : "Invalid input" 
+    };
   }
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -65,7 +69,11 @@ export async function updateAchievementAction(
   const { user } = await requireAdmin();
   const parsed = achievementSchema.safeParse(parseAchievementFormData(formData));
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    const firstError = parsed.error.issues[0];
+    return { 
+      success: false, 
+      error: firstError ? `${firstError.path.join('.')}: ${firstError.message}` : "Invalid input" 
+    };
   }
   const supabase = await createClient();
   const { error } = await supabase

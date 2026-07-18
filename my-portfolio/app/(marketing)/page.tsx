@@ -9,7 +9,7 @@ import {CertificationCard} from "@/components/certifications/certification-card"
 import { FocusAreas } from "@/components/portfolio/focus-areas";
 
 
-import {HeroSection} from "@/components/portfolio/hero-section";
+import { HeroSection } from "@/components/portfolio/hero-section";
 
 import { ProjectsShowcase } from "@/components/portfolio/projects-showcase";
 
