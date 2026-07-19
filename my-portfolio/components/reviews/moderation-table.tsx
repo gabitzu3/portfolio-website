@@ -1,6 +1,7 @@
 "use client";
 import { useTransition } from "react";
-import { moderateReviewAction } from "@/lib/actions/reviews";
+import { moderateReviewAction, deleteReviewAction } from "@/lib/actions/reviews";
+import { DeleteConfirmDialog } from "@/components/admin/delete-confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,11 @@ export function ModerationTable({ reviews }: ModerationTableProps) {
   function handleModerate(reviewId: string, status: "approved" | "rejected") {
     startTransition(async () => {
       await moderateReviewAction(reviewId, status);
+    });
+  }
+  function handleDelete(reviewId: string) {
+    startTransition(async () => {
+      await deleteReviewAction(reviewId);
     });
   }
   if (reviews.length === 0) {
@@ -69,25 +75,32 @@ export function ModerationTable({ reviews }: ModerationTableProps) {
             </TableCell>
             <TableCell>{formatDate(review.created_at)}</TableCell>
             <TableCell className="text-right">
-              {review.status === "pending" ? (
-                <div className="flex justify-end gap-2">
-                  <Button
-                    size="sm"
-                    disabled={pending}
-                    onClick={() => handleModerate(review.id, "approved")}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    disabled={pending}
-                    onClick={() => handleModerate(review.id, "rejected")}
-                  >
-                    Reject
-                  </Button>
-                </div>
-              ) : null}
+              <div className="flex justify-end gap-2">
+                {review.status === "pending" ? (
+                  <>
+                    <Button
+                      size="sm"
+                      disabled={pending}
+                      onClick={() => handleModerate(review.id, "approved")}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      disabled={pending}
+                      onClick={() => handleModerate(review.id, "rejected")}
+                    >
+                      Reject
+                    </Button>
+                  </>
+                ) : null}
+                <DeleteConfirmDialog
+                  title="Delete review"
+                  description={`Delete review from "${review.name}"? This cannot be undone.`}
+                  onConfirm={() => handleDelete(review.id)}
+                />
+              </div>
             </TableCell>
           </TableRow>
         ))}

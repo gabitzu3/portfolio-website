@@ -13,7 +13,7 @@ export function HeroSection({ profile }: HeroSectionProps) {
         <div className="max-w-3xl space-y-6">
 
           <p className="text-sm font-medium uppercase tracking-wider text-primary">
-            Portfolio
+            Foundry
           </p>
 
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">

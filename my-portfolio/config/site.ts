@@ -1,11 +1,13 @@
 export const siteConfig = {
-  name: "Portfolio Platform",
+  name: "Foundry",
   description:
     "A production-ready personal portfolio platform with blog, achievements, certifications, and reviews.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   links: {
     github: "https://github.com",
     linkedin: "https://linkedin.com",
+    email: "contact@example.com",
+    location: "Available for remote work",
   },
 } as const;
 export const mainNav = [
@@ -14,6 +16,8 @@ export const mainNav = [
   { title: "Achievements", href: "/achievements" },
   { title: "Certifications", href: "/certifications" },
   { title: "Reviews", href: "/reviews" },
+  { title: "Search", href: "/search" },
+  { title: "Contact", href: "/contact" },
 ] as const;
 export const authNav = [
   { title: "Login", href: "/login" },
