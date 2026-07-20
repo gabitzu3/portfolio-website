@@ -23,6 +23,7 @@ export function DeleteConfirmDialog({
   triggerLabel = "Delete",
 }: DeleteConfirmDialogProps) {
   const [pending, startTransition] = useTransition();
+
   useEffect(() => {
     fetch("http://127.0.0.1:7728/ingest/722deae5-ae50-4839-909b-3d085496e7ae", {
       method: "POST",
@@ -41,6 +42,7 @@ export function DeleteConfirmDialog({
       }),
     }).catch(() => {});
   }, [triggerLabel]);
+
   return (
     <Dialog>
       <DialogTrigger render={<Button variant="destructive" size="sm" />}>
