@@ -1,7 +1,6 @@
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Mail, Link2, MapPin, Phone } from "lucide-react";
+import { Mail, Link2, MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 export default function ContactPage() {
   return (
@@ -17,7 +16,7 @@ export default function ContactPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              Feel free to reach out through any of the following channels. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+              Feel free to reach out through any of the following channels. I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
             </p>
             <div className="grid gap-4 md:grid-cols-2">
               <a href={`mailto:${siteConfig.links.email || 'contact@example.com'}`} className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors">
@@ -56,47 +55,9 @@ export default function ContactPage() {
             <CardTitle>Send a Message</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">Name</label>
-                  <input
-                    id="name"
-                    type="text"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    placeholder="your@email.com"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="subject" className="text-sm font-medium">Subject</label>
-                <input
-                  id="subject"
-                  type="text"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  placeholder="What's this about?"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium">Message</label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  placeholder="Your message..."
-                />
-              </div>
-              <Button type="submit">Send Message</Button>
-            </form>
+            <p className="text-sm text-muted-foreground">
+              Please use the email link above to send a message.
+            </p>
           </CardContent>
         </Card>
       </div>

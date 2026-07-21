@@ -24,7 +24,7 @@ CREATE POLICY "public_assets_update_admin"
 CREATE POLICY "public_assets_delete_admin"
   ON storage.objects FOR DELETE  USING (bucket_id = 'public-assets' AND is_admin());
 CREATE POLICY "certificates_select_admin"
-  ON storage.objects FOR logs_select_admin  USING (bucket_id = 'certificates' AND is_admin());
+  ON storage.objects FOR SELECT USING (bucket_id = 'certificates' AND is_admin());
 CREATE POLICY "certificates_insert_admin"
   ON storage.objects FOR INSERT  WITH CHECK (bucket_id = 'certificates' AND is_admin());
 CREATE POLICY "certificates_update_admin"
@@ -32,4 +32,3 @@ CREATE POLICY "certificates_update_admin"
   WITH CHECK (bucket_id = 'certificates' AND is_admin());
 CREATE POLICY "certificates_delete_admin"
   ON storage.objects FOR DELETE  USING (bucket_id = 'certificates' AND is_admin());
-

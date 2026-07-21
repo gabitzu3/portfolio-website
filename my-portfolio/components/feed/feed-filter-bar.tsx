@@ -1,7 +1,5 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -10,65 +8,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ALL_FEED_TYPES, FEED_SORT_LABELS, FEED_TYPE_LABELS } from "@/types/feed";
-import type { FeedItemType, FeedSort } from "@/types/feed";
+import { FEED_SORT_LABELS } from "@/types/feed";
+import type { FeedSort } from "@/types/feed";
+import type { Tag } from "@/types";
 
 interface FeedFilterBarProps {
   currentSort: FeedSort;
-  currentTypes: FeedItemType[];
+  currentTag?: string;
+  includeReviews: boolean;
+  tags: Tag[];
 }
 
-export function FeedFilterBar({ currentSort, currentTypes }: FeedFilterBarProps) {
+export function FeedFilterBar({ currentSort, currentTag, includeReviews, tags }: FeedFilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [sort, setSort] = useState<FeedSort>(currentSort);
-  const [selectedTypes, setSelectedTypes] = useState<FeedItemType[]>(currentTypes);
 
-  function toggleType(type: FeedItemType) {
-    const newTypes = selectedTypes.includes(type)
-      ? selectedTypes.filter((t) => t !== type)
-      : [...selectedTypes, type];
-    setSelectedTypes(newTypes);
-    updateParams(newTypes, sort);
-  }
-
-  function handleSortChange(newSort: FeedSort | null) {
-    if (!newSort) return;
-    setSort(newSort);
-    updateParams(selectedTypes, newSort);
-  }
-
-  function updateParams(types: FeedItemType[], sortValue: FeedSort) {
+  function updateParams(next: { sort?: FeedSort; tag?: string | null; includeReviews?: boolean }) {
     const params = new URLSearchParams(searchParams);
-    params.set("sort", sortValue);
-    if (types.length === 0) {
-      params.delete("types");
-    } else {
-      params.set("types", types.join(","));
+    if (next.sort) params.set("sort", next.sort);
+    if (next.tag === null) params.delete("tag");
+    else if (next.tag) params.set("tag", next.tag);
+    if (next.includeReviews !== undefined) {
+      if (next.includeReviews) params.delete("reviews");
+      else params.set("reviews", "off");
     }
     router.push(`/feed?${params.toString()}`);
   }
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div className="flex flex-wrap gap-3">
-        {ALL_FEED_TYPES.map((type) => (
-          <label key={type} className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={selectedTypes.includes(type)}
-              onChange={() => toggleType(type)}
-              className="rounded border-gray-300"
-            />
-            <span className="text-sm">{FEED_TYPE_LABELS[type]}</span>
-          </label>
-        ))}
+      <div className="flex flex-wrap items-center gap-4">
+        {tags.length > 0 && (
+          <div className="flex items-center gap-2">
+            <Label htmlFor="tag" className="text-sm">
+              Tag:
+            </Label>
+            <Select
+              value={currentTag ?? "all"}
+              onValueChange={(value) => updateParams({ tag: value === "all" ? null : value })}
+            >
+              <SelectTrigger id="tag" className="w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All tags</SelectItem>
+                {tags.map((tag) => (
+                  <SelectItem key={tag.id} value={tag.slug}>
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={includeReviews}
+            onChange={(e) => updateParams({ includeReviews: e.target.checked })}
+            className="rounded border-gray-300"
+          />
+          Include reviews
+        </label>
       </div>
       <div className="flex items-center gap-2">
         <Label htmlFor="sort" className="text-sm">
           Sort by:
         </Label>
-        <Select value={sort} onValueChange={handleSortChange}>
+        <Select value={currentSort} onValueChange={(value) => value && updateParams({ sort: value as FeedSort })}>
           <SelectTrigger id="sort" className="w-[180px]">
             <SelectValue />
           </SelectTrigger>

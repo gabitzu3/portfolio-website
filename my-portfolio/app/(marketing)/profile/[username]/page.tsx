@@ -1,20 +1,15 @@
 import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getSessionProfile } from "@/lib/auth/get-user";
 import { getProfileByUsername } from "@/lib/data/profiles";
-import { getRecentPosts } from "@/lib/data/posts";
-import { getRecentAchievements } from "@/lib/data/achievements";
-import { getRecentCertifications } from "@/lib/data/certifications";
+import { getPublishedContent } from "@/lib/data/content";
 import { getRecentReviews } from "@/lib/data/reviews";
-import { PostCard } from "@/components/blog/post-card";
-import { AchievementCard } from "@/components/achievements/achievement-card";
-import { CertificationCard } from "@/components/certifications/certification-card";
+import { ContentCard } from "@/components/content/content-card";
 import { ReviewCard } from "@/components/reviews/review-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import Link from "next/link";
-import type { Post, Achievement, Certification, Review } from "@/types";
+import type { Content, Review } from "@/types";
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -31,16 +26,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   const isOwnProfile = session?.user.id === profile.id;
 
-  let posts: Post[] = [];
-  let achievements: Achievement[] = [];
-  let certifications: Certification[] = [];
+  let recentContent: Content[] = [];
+  let timelineItems: Content[] = [];
   let reviews: Review[] = [];
 
   try {
-    [posts, achievements, certifications, reviews] = await Promise.all([
-      getRecentPosts(3),
-      getRecentAchievements(3),
-      getRecentCertifications(3),
+    [recentContent, timelineItems, reviews] = await Promise.all([
+      getPublishedContent({ sort: "newest", limit: 4 }),
+      getPublishedContent({ tagSlugs: ["achievement", "certification"], sort: "newest", limit: 4 }),
       getRecentReviews(3),
     ]);
   } catch {
@@ -105,41 +98,28 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         {/* Recent Content */}
         <div className="space-y-8">
           <div>
-            <h2 className="text-lg font-semibold mb-4">Recent Posts</h2>
-            {posts.length > 0 ? (
+            <h2 className="text-lg font-semibold mb-4">Recent Content</h2>
+            {recentContent.length > 0 ? (
               <div className="grid gap-4 md:grid-cols-2">
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
+                {recentContent.map((item) => (
+                  <ContentCard key={item.id} item={item} />
                 ))}
               </div>
             ) : (
-              <EmptyState title="No posts yet" />
+              <EmptyState title="Nothing published yet" />
             )}
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold mb-4">Achievements</h2>
-            {achievements.length > 0 ? (
+            <h2 className="text-lg font-semibold mb-4">Timeline</h2>
+            {timelineItems.length > 0 ? (
               <div className="grid gap-4 md:grid-cols-2">
-                {achievements.map((achievement) => (
-                  <AchievementCard key={achievement.id} achievement={achievement} />
+                {timelineItems.map((item) => (
+                  <ContentCard key={item.id} item={item} />
                 ))}
               </div>
             ) : (
-              <EmptyState title="No achievements yet" />
-            )}
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Certifications</h2>
-            {certifications.length > 0 ? (
-              <div className="grid gap-4 md:grid-cols-2">
-                {certifications.map((certification) => (
-                  <CertificationCard key={certification.id} certification={certification} />
-                ))}
-              </div>
-            ) : (
-              <EmptyState title="No certifications yet" />
+              <EmptyState title="No achievements or certifications yet" />
             )}
           </div>
 
