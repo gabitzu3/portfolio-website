@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { getFeaturedProjects } from "@/lib/data/projects";
 
-import { projects } from "@/config/projects";
 
-
-export function ProjectsShowcase() {
+export async function ProjectsShowcase() {
+  const projects = await getFeaturedProjects(3);
 
   return (
 

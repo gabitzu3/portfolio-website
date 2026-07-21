@@ -15,6 +15,9 @@ export const LOG_ACTIONS = {
   REVIEW_SUBMIT: "review_submit",
   REVIEW_APPROVE: "review_approve",
   REVIEW_REJECT: "review_reject",
+  PROJECT_CREATE: "project_create",
+  PROJECT_UPDATE: "project_update",
+  PROJECT_DELETE: "project_delete",
   ADMIN_ACCESS: "admin_access",
 } as const;
 export type LogAction = (typeof LOG_ACTIONS)[keyof typeof LOG_ACTIONS];
@@ -35,5 +38,8 @@ export const LOG_ACTION_LABELS: Record<LogAction, string> = {
   [LOG_ACTIONS.REVIEW_SUBMIT]: "Review Submitted",
   [LOG_ACTIONS.REVIEW_APPROVE]: "Review Approved",
   [LOG_ACTIONS.REVIEW_REJECT]: "Review Rejected",
+  [LOG_ACTIONS.PROJECT_CREATE]: "Project Created",
+  [LOG_ACTIONS.PROJECT_UPDATE]: "Project Updated",
+  [LOG_ACTIONS.PROJECT_DELETE]: "Project Deleted",
   [LOG_ACTIONS.ADMIN_ACCESS]: "Admin Access",
 };

@@ -12,7 +12,9 @@ export const siteConfig = {
 } as const;
 export const mainNav = [
   { title: "Home", href: "/" },
+  { title: "Feed", href: "/feed" },
   { title: "Blog", href: "/blog" },
+  { title: "Projects", href: "/projects" },
   { title: "Achievements", href: "/achievements" },
   { title: "Certifications", href: "/certifications" },
   { title: "Reviews", href: "/reviews" },
@@ -26,6 +28,7 @@ export const authNav = [
 export const adminNav = [
   { title: "Dashboard", href: "/admin" },
   { title: "Posts", href: "/admin/posts" },
+  { title: "Projects", href: "/admin/projects" },
   { title: "Achievements", href: "/admin/achievements" },
   { title: "Certifications", href: "/admin/certifications" },
   { title: "Reviews", href: "/admin/reviews" },

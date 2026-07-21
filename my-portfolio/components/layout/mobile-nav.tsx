@@ -37,7 +37,7 @@ export function MobileNav({ session }: MobileNavProps) {
           <div className="border-t pt-4">
             {session ? (
               <>
-                <Link href="/profile" className="block text-sm font-medium">
+                <Link href={`/profile/${session.profile.username || session.profile.id}`} className="block text-sm font-medium">
                   Profile
                 </Link>
                 {session.profile.is_admin ? (

@@ -30,6 +30,28 @@ export async function updateProfileAction(
     return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const supabase = await createClient();
+  let avatarUrl: string | null = null;
+  const avatarFile = formData.get("avatar") as File | null;
+  if (avatarFile && avatarFile.size > 0) {
+    const fileExt = avatarFile.name.split(".").pop();
+    const fileName = `${session.user.id}-${Date.now()}.${fileExt}`;
+    const filePath = `avatars/${session.user.id}/${fileName}`;
+    const { error: uploadError } = await supabase.storage
+      .from("public-assets")
+      .upload(filePath, avatarFile, {
+        upsert: true,
+      });
+
+    if (uploadError) {
+      return { success: false, error: `Failed to upload avatar: ${uploadError.message}` };
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from("public-assets")
+      .getPublicUrl(filePath);
+
+    avatarUrl = publicUrl;
+  }
   const { error } = await supabase
     .from("profiles")
     .update({
@@ -38,6 +60,7 @@ export async function updateProfileAction(
       title: parsed.data.title || null,
       bio: parsed.data.bio || null,
       focus_areas: parsed.data.focusAreas ?? [],
+      ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
     })
     .eq("id", session.user.id);
   if (error) {

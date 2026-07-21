@@ -22,7 +22,7 @@ export async function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           {session ? (
             <>
               {session.profile.is_admin ? (
@@ -32,10 +32,23 @@ export async function SiteHeader() {
                   </Button>
                 </Link>
               ) : null}
-              <Link href="/profile">
-                <Button variant="outline" size="sm">
-                  Profile
-                </Button>
+              <Link href={`/profile/${session.profile.username || session.profile.id}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                {session.profile.avatar_url ? (
+                  <img
+                    src={session.profile.avatar_url}
+                    alt={session.profile.full_name || "Avatar"}
+                    className="w-8 h-8 rounded-full object-cover border"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border">
+                    <span className="text-xs font-medium">
+                      {(session.profile.full_name || session.profile.username || "U").charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <span className="text-sm font-medium">
+                  {session.profile.username || session.profile.full_name || "User"}
+                </span>
               </Link>
             </>
           ) : (

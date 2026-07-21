@@ -7,6 +7,7 @@ export type Json =
   | Json[];
 export type PostCategory = "cybersecurity" | "leadership" | "projects";
 export type PostStatus = "draft" | "published";
+export type ProjectStatus = "draft" | "published";
 export type AchievementCategory =
   | "ctf"
   | "internship"
@@ -256,6 +257,78 @@ export interface Database {
         };
         Relationships: [];
       };
+      projects: {
+        Row: {
+          id: string;
+          title: string;
+          slug: string;
+          description: string;
+          tags: string[];
+          cover_image_url: string | null;
+          status: ProjectStatus;
+          importance: number;
+          sort_order: number;
+          operation: string | null;
+          status_label: string | null;
+          duration: string | null;
+          objective: string | null;
+          architecture: string | null;
+          lessons_learned: string | null;
+          demo_url: string | null;
+          repo_url: string | null;
+          featured: boolean;
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          slug: string;
+          description: string;
+          tags?: string[];
+          cover_image_url?: string | null;
+          status?: ProjectStatus;
+          importance?: number;
+          sort_order?: number;
+          operation?: string | null;
+          status_label?: string | null;
+          duration?: string | null;
+          objective?: string | null;
+          architecture?: string | null;
+          lessons_learned?: string | null;
+          demo_url?: string | null;
+          repo_url?: string | null;
+          featured?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          slug?: string;
+          description?: string;
+          tags?: string[];
+          cover_image_url?: string | null;
+          status?: ProjectStatus;
+          importance?: number;
+          sort_order?: number;
+          operation?: string | null;
+          status_label?: string | null;
+          duration?: string | null;
+          objective?: string | null;
+          architecture?: string | null;
+          lessons_learned?: string | null;
+          demo_url?: string | null;
+          repo_url?: string | null;
+          featured?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -269,6 +342,7 @@ export interface Database {
       post_status: PostStatus;
       achievement_category: AchievementCategory;
       review_status: ReviewStatus;
+      project_status: ProjectStatus;
     };
     CompositeTypes: Record<string, never>;
   };
@@ -279,3 +353,4 @@ export type Achievement = Database["public"]["Tables"]["achievements"]["Row"];
 export type Certification = Database["public"]["Tables"]["certifications"]["Row"];
 export type Review = Database["public"]["Tables"]["reviews"]["Row"];
 export type Log = Database["public"]["Tables"]["logs"]["Row"];
+export type Project = Database["public"]["Tables"]["projects"]["Row"];

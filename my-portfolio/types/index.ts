@@ -8,6 +8,8 @@ export type {
   PostCategory,
   PostStatus,
   Profile,
+  Project,
+  ProjectStatus,
   Review,
   ReviewStatus,
 } from "./database";
